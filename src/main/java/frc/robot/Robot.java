@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
       //m_ledBuffer.setHSV(i, 196, sat, 84);
       m_ledBuffer.setRGB(i, 0, 0, blue);
     }
-    m_blueflux_FirstPixelHue += 1;
+    m_blueflux_FirstPixelHue++;
 
     m_blueflux_FirstPixelHue %= 180;
     //for (var i = 0; i < m_ledBuffer.getLength(); i++) {
@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
       //m_ledBuffer.setHSV(i, 196, sat, 84);
       m_ledBuffer.setRGB(i, red, 0, 0);
     }
-    m_redflux_FirstPixelHue += 1;
+    m_redflux_FirstPixelHue++;
 
     m_redflux_FirstPixelHue %= 180;
     //for (var i = 0; i < m_ledBuffer.getLength(); i++) {
