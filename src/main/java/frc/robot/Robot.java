@@ -51,6 +51,8 @@ public class Robot extends TimedRobot {
 
     flywheel = new FlywheelSubsystem();
 
+    JoystickButton lightingButton = new JoystickButton(m_stick, 11);
+
     JoystickButton intakeInButton = new JoystickButton(m_stick, 2);
 
     JoystickButton outtakeButton = new JoystickButton(m_stick, 5);
@@ -60,6 +62,8 @@ public class Robot extends TimedRobot {
     JoystickButton secondaryOuttakeButton = new JoystickButton(m_stick, 6);
 
     JoystickButton flywheelButton = new JoystickButton(m_stick, 1);
+
+    lightingButton.whenActive(new LightingCommand());
 
     intakeInButton.whileActiveOnce(new IntakeCommand(.5));
 
@@ -96,8 +100,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     
     m_led.setData(m_ledBuffer);
-    
-    
+
   }
 
   public void blueflux(){
