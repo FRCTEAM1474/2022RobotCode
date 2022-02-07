@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+//import edu.wpi.first.wpilibj.AddressableLED;
+//import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -22,10 +22,10 @@ public class Robot extends TimedRobot {
   private final PWMSparkMax m_motorTwo = new PWMSparkMax(2);
   private final PWMSparkMax m_motorThree = new PWMSparkMax(3);
 
-  public AddressableLED m_led;
+  /*public AddressableLED m_led;
   public AddressableLEDBuffer m_ledBuffer;
   public int m_redflux_FirstPixelHue;
-  public int m_blueflux_FirstPixelHue;
+  public int m_blueflux_FirstPixelHue;*/
 
   MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
   MotorControllerGroup m_Left = new MotorControllerGroup(m_motorTwo, m_motorThree);
@@ -37,6 +37,8 @@ public class Robot extends TimedRobot {
   public static SecondaryIntakeSubsystem secondaryintake;
 
   public static FlywheelSubsystem flywheel;
+
+  public static Bling bling;
   
   @Override
   public void robotInit() {
@@ -44,6 +46,8 @@ public class Robot extends TimedRobot {
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
     m_Left.setInverted(true);
+
+    bling = new Bling();
 
     intake = new IntakeSubsystem();
 
@@ -71,7 +75,7 @@ public class Robot extends TimedRobot {
 
     flywheelButton.whileActiveOnce(new FlywheelCommand(1));
     
-    m_led = new AddressableLED(5);
+    /*m_led = new AddressableLED(5);
   
     m_ledBuffer = new AddressableLEDBuffer(60);
 
@@ -79,7 +83,7 @@ public class Robot extends TimedRobot {
     
     m_led.setData(m_ledBuffer);
 
-    m_led.start();
+    m_led.start();*/
   }
 
   @Override
@@ -95,12 +99,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     
-    m_led.setData(m_ledBuffer);
-    
     
   }
 
-  public void blueflux(){
+  /*public void blueflux(){
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       final var blue = (m_blueflux_FirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
       //m_ledBuffer.setHSV(i, 196, sat, 84);
@@ -125,5 +127,6 @@ public class Robot extends TimedRobot {
     //for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       //m_ledBuffer.setRGB(i, 0, 0, 255);
     //}
-  }
+  }*/
 }
+
