@@ -18,9 +18,8 @@ public class Bling extends SubsystemBase {
   private Joystick driverController;
   
   // In the constructor I initialized the LED strip as well as the LED buffer
-  // and an XBOX controller so that I could test the code on our robot
+  // and a joystick
   
-  // See todo below
   public Bling() {
     m_led = new AddressableLED(5);
     m_ledBuffer = new AddressableLEDBuffer(60);
@@ -30,10 +29,6 @@ public class Bling extends SubsystemBase {
 
     
     driverController = new Joystick(0);
-
-    //JoystickButton redLightButton = new JoystickButton(driverController, 11);
-
-    //JoystickButton blueLightButton = new JoystickButton(driverController, 12);
 
   }
 
@@ -55,7 +50,7 @@ public class Bling extends SubsystemBase {
     } else {
       // Run setColorRGBAll method to set the color to black (off)
       //setColorRGBAll(0, 0, 0);
-      System.out.println("lightstuff");
+
     }
 
     // Set the LEDs to the color held in the LED buffer variable

@@ -9,19 +9,19 @@ public class SecondaryIntakeCommand extends CommandBase {
     }
     @Override
     public void initialize() {
-        //System.out.println("im initializing");
+
         Robot.secondaryintake.setSpeed(m_Speed);
     }
 
     @Override
     public void execute() {
-        //System.out.println("im executing");
+
         Robot.secondaryintake.setSpeed(m_Speed);
     }
 
     @Override
     public void end(boolean interup){
-        //System.out.println("im ending");
+
         Robot.secondaryintake.setSpeed(0);
     }
 }

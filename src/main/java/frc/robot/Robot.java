@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-//import edu.wpi.first.wpilibj.AddressableLED;
-//import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -21,11 +19,6 @@ public class Robot extends TimedRobot {
   private final PWMSparkMax m_motorOne = new PWMSparkMax(1);
   private final PWMSparkMax m_motorTwo = new PWMSparkMax(2);
   private final PWMSparkMax m_motorThree = new PWMSparkMax(3);
-
-  /*public AddressableLED m_led;
-  public AddressableLEDBuffer m_ledBuffer;
-  public int m_redflux_FirstPixelHue;
-  public int m_blueflux_FirstPixelHue;*/
 
   MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
   MotorControllerGroup m_Left = new MotorControllerGroup(m_motorTwo, m_motorThree);
@@ -75,15 +68,6 @@ public class Robot extends TimedRobot {
 
     flywheelButton.whileActiveOnce(new FlywheelCommand(1));
     
-    /*m_led = new AddressableLED(5);
-  
-    m_ledBuffer = new AddressableLEDBuffer(60);
-
-    m_led.setLength(m_ledBuffer.getLength());
-    
-    m_led.setData(m_ledBuffer);
-
-    m_led.start();*/
   }
 
   @Override
