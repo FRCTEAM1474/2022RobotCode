@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+
+import edu.wpi.first.wpilibj.Timer;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -38,6 +42,8 @@ public class Robot extends TimedRobot {
 
   private final Joystick m_stick = new Joystick(0);
 
+  private final GenericHID m_controller = new GenericHID(2);
+
   public static IntakeSubsystem intake;
 
   public static SecondaryIntakeSubsystem secondaryintake;
@@ -47,6 +53,8 @@ public class Robot extends TimedRobot {
   public static Bling bling;
 
   double flywheelSpeedLimit = 1;
+
+  private double startTime;
   
   @Override
 
@@ -93,6 +101,37 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void autonomousInit() {
+    startTime = Timer.getFPGATimestamp();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    double time = Timer.getFPGATimestamp();
+    //System.out.println(time - startTime);
+    if (time - startTime < 3) {
+
+      m_robotDrive.arcadeDrive(0.8, 0.2);
+
+    }
+    
+    
+    /*if (time - startTime < 3) {
+      //m_Right.set(0.1);
+      //m_Left.set(0.1);
+      m_robotDrive.arcadeDrive(0.4, 0.4);
+      //m_motorZero.set(0.5);
+      //System.out.println(Timer.getFPGATimestamp());
+    } else {
+      //m_Right.set(0);
+      //m_Left.set(0);
+      m_robotDrive.arcadeDrive(0, 0);
+      //m_motorZero.set(0);
+      //System.out.println(Timer.getFPGATimestamp());
+    }*/
+  }
+
+  @Override
 
   public void teleopPeriodic() {
 
@@ -102,6 +141,8 @@ public class Robot extends TimedRobot {
 
     m_robotDrive.arcadeDrive(m_stick.getY(), -m_stick.getX());
 
+    //m_robotDrive.arcadeDrive(m_controller.getRawAxis(1), -m_controller.getRawAxis(0));
+
     //flywheelSpeedLimit = (m_stick.getRawAxis(3)+1)/2.0;
 
     //JoystickButton flywheelButton = new JoystickButton(m_stick, 1);
@@ -109,6 +150,14 @@ public class Robot extends TimedRobot {
     //flywheelButton.whileActiveOnce(new FlywheelCommand(flywheelSpeedLimit));
     
     //flywheelButton.whileActiveOnce(new FlywheelCommand(1*flywheelSpeedLimit));
+
+    GenericHID intakeInControllerButton = new GenericHID(2);
+
+    if (intakeInControllerButton.getRawButtonPressed(2)){
+
+      new IntakeCommand(.5);
+
+    }
     
   }
 
