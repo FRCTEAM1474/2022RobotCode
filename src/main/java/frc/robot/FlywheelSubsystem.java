@@ -1,18 +1,18 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class FlywheelSubsystem extends SubsystemBase {
 
-    TalonSRX _talon3 = new TalonSRX(3);
+    //TalonSRX _talon3 = new TalonSRX(3);
+
+    private final PWMSparkMax m_flywheelMotor = new PWMSparkMax(2);
 
     public void setSpeed(double speed) {
 
-        _talon3.set(ControlMode.PercentOutput, speed);
+        m_flywheelMotor.set(speed);
         
     }
 }

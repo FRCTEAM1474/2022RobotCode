@@ -4,7 +4,15 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.GenericHID;
+
+//import edu.wpi.first.wpilibj.motorcontrol.Talon;
+
+//import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
+
+//import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -16,7 +24,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+//import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -26,13 +34,30 @@ public class Robot extends TimedRobot {
 
   // maps the MOTORS to the MOTOR CONTROLLERS
 
-  private final PWMSparkMax m_motorZero = new PWMSparkMax(0);
+  //private final PWMSparkMax m_motorZero = new PWMSparkMax(0);
 
-  private final PWMSparkMax m_motorOne = new PWMSparkMax(1);
+  private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(1);
 
-  private final PWMSparkMax m_motorTwo = new PWMSparkMax(2);
+  //private final static MotorController m_motorZero = (MotorController) new TalonSRX(0);
 
-  private final PWMSparkMax m_motorThree = new PWMSparkMax(3);
+  //private final PWMSparkMax m_motorOne = new PWMSparkMax(1);
+
+  private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(2);
+  
+
+  //private final static MotorController m_motorOne = (MotorController) new TalonSRX(1);
+
+  //private final PWMSparkMax m_motorTwo = new PWMSparkMax(2);
+
+  private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(3);
+
+  //private final static MotorController m_motorTwo = (MotorController) new TalonSRX(2);
+
+  //private final PWMSparkMax m_motorThree = new PWMSparkMax(3);
+
+  private final WPI_TalonSRX m_motorThree = new WPI_TalonSRX(4);
+
+  //private final static MotorController m_motorThree = (MotorController) new TalonSRX(3);
 
   MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
 
@@ -41,8 +66,6 @@ public class Robot extends TimedRobot {
   private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_Left, m_Right);
 
   private final Joystick m_stick = new Joystick(0);
-
-  private final GenericHID m_controller = new GenericHID(2);
 
   public static IntakeSubsystem intake;
 
