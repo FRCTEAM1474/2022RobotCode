@@ -97,29 +97,29 @@ public class Robot extends TimedRobot {
 
     flywheel = new FlywheelSubsystem();
 
-    JoystickButton intakeInButton = new JoystickButton(m_stick, 2);
+    JoystickButton intakeInButton = new JoystickButton(m_stick, 5);
 
-    JoystickButton outtakeButton = new JoystickButton(m_stick, 5);
+    JoystickButton outtakeButton = new JoystickButton(m_stick, 3);
 
-    JoystickButton secondaryIntakeButton = new JoystickButton(m_stick, 4);
+    JoystickButton secondaryIntakeButton = new JoystickButton(m_stick, 6);
 
-    JoystickButton secondaryOuttakeButton = new JoystickButton(m_stick, 6);
+    JoystickButton secondaryOuttakeButton = new JoystickButton(m_stick, 4);
 
     JoystickButton slowFlywheelButton = new JoystickButton(m_stick, 1);
 
-    JoystickButton fastFlywheelButton = new JoystickButton(m_stick, 3);
+    JoystickButton fastFlywheelButton = new JoystickButton(m_stick, 2);
 
-    intakeInButton.whileActiveOnce(new IntakeCommand(.5));
+    intakeInButton.whileActiveOnce(new IntakeCommand(-1));
 
-    outtakeButton.whileActiveOnce(new IntakeCommand(-0.5));
+    outtakeButton.whileActiveOnce(new IntakeCommand(1));
 
-    secondaryIntakeButton.whileActiveOnce(new SecondaryIntakeCommand(.5));
+    secondaryIntakeButton.whileActiveOnce(new SecondaryIntakeCommand(-.75));
 
-    secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(-0.5));
+    secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(0.75));
 
-    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(0.25));
+    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.50));
 
-    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(1));
+    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-1));
 
   }
 
