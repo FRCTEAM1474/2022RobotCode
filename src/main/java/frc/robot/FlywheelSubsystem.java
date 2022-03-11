@@ -10,7 +10,7 @@ public class FlywheelSubsystem extends SubsystemBase {
 
     //TalonSRX _talon3 = new TalonSRX(3);
 
-    private final CANSparkMax m_flywheelMotor = new CANSparkMax(7, MotorType.kBrushless);
+    private final CANSparkMax m_flywheelMotor = new CANSparkMax(5, MotorType.kBrushless);
 
     public void setSpeed(double speed) {
 

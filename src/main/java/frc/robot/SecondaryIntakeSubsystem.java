@@ -1,6 +1,6 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -8,7 +8,7 @@ public class SecondaryIntakeSubsystem extends SubsystemBase {
 
     //TalonSRX _talon2 = new TalonSRX(2);
 
-    private final Talon m_secondaryIntakeMotor = new Talon(0);
+    private final WPI_VictorSPX m_secondaryIntakeMotor = new WPI_VictorSPX(6);
 
     public void setSpeed(double speed) {
 
@@ -16,3 +16,5 @@ public class SecondaryIntakeSubsystem extends SubsystemBase {
         
     }
 }
+
+

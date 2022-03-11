@@ -6,13 +6,9 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.GenericHID;
-
-//import edu.wpi.first.wpilibj.motorcontrol.Talon;
-
-//import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
-
-//import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -24,8 +20,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
-//import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -34,30 +28,13 @@ public class Robot extends TimedRobot {
 
   // maps the MOTORS to the MOTOR CONTROLLERS
 
-  //private final PWMSparkMax m_motorZero = new PWMSparkMax(0);
-
   private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(1);
 
-  //private final static MotorController m_motorZero = (MotorController) new TalonSRX(0);
+  private final WPI_VictorSPX m_motorOne = new WPI_VictorSPX(7);
 
-  //private final PWMSparkMax m_motorOne = new PWMSparkMax(1);
+  private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(2);
 
-  private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(2);
-  
-
-  //private final static MotorController m_motorOne = (MotorController) new TalonSRX(1);
-
-  //private final PWMSparkMax m_motorTwo = new PWMSparkMax(2);
-
-  private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(3);
-
-  //private final static MotorController m_motorTwo = (MotorController) new TalonSRX(2);
-
-  //private final PWMSparkMax m_motorThree = new PWMSparkMax(3);
-
-  private final WPI_TalonSRX m_motorThree = new WPI_TalonSRX(4);
-
-  //private final static MotorController m_motorThree = (MotorController) new TalonSRX(3);
+  private final WPI_VictorSPX m_motorThree = new WPI_VictorSPX(4);
 
   MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
 
@@ -67,6 +44,8 @@ public class Robot extends TimedRobot {
 
   private final Joystick m_stick = new Joystick(0);
 
+  private final Joystick m_stickTwo = new Joystick(1);
+
   public static IntakeSubsystem intake;
 
   public static SecondaryIntakeSubsystem secondaryintake;
@@ -74,6 +53,10 @@ public class Robot extends TimedRobot {
   public static FlywheelSubsystem flywheel;
 
   public static Bling bling;
+
+  public static ClimberSubsystem climber;
+
+  //public static ServoSubsystem servo;
 
   double flywheelSpeedLimit = 1;
 
@@ -97,29 +80,49 @@ public class Robot extends TimedRobot {
 
     flywheel = new FlywheelSubsystem();
 
+    climber = new ClimberSubsystem();
+
+    //servo = new ServoSubsystem();
+
     JoystickButton intakeInButton = new JoystickButton(m_stick, 5);
 
     JoystickButton outtakeButton = new JoystickButton(m_stick, 3);
 
-    JoystickButton secondaryIntakeButton = new JoystickButton(m_stick, 6);
+    JoystickButton secondaryIntakeButton = new JoystickButton(m_stickTwo, 6);
 
-    JoystickButton secondaryOuttakeButton = new JoystickButton(m_stick, 4);
+    JoystickButton secondaryOuttakeButton = new JoystickButton(m_stickTwo, 4);
 
-    JoystickButton slowFlywheelButton = new JoystickButton(m_stick, 1);
+    JoystickButton slowFlywheelButton = new JoystickButton(m_stickTwo, 1);
 
-    JoystickButton fastFlywheelButton = new JoystickButton(m_stick, 2);
+    JoystickButton fastFlywheelButton = new JoystickButton(m_stickTwo, 2);
+
+    JoystickButton climberUp = new JoystickButton(m_stick, 11);
+
+    JoystickButton climberDown = new JoystickButton(m_stick, 12);
+
+    JoystickButton climberStay = new JoystickButton(m_stick, 7);
+
+    //JoystickButton servoButton = new JoystickButton(m_stickTwo, 8);
+
+    //servoButton.whileActiveContinuous(new ServoCommand(0.5));
 
     intakeInButton.whileActiveOnce(new IntakeCommand(-1));
 
     outtakeButton.whileActiveOnce(new IntakeCommand(1));
 
-    secondaryIntakeButton.whileActiveOnce(new SecondaryIntakeCommand(-.75));
+    secondaryIntakeButton.whileActiveOnce(new SecondaryIntakeCommand(-1));
 
-    secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(0.75));
+    secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(1));
 
     slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.50));
 
     fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-1));
+
+    climberUp.whileActiveOnce(new ClimberCommand(1));
+
+    climberDown.whileActiveOnce(new ClimberCommand(-1));
+
+    climberStay.whileActiveOnce(new ClimberCommand(0));
 
   }
 
