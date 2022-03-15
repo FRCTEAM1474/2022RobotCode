@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.AddressableLED;
 
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.GenericHID;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,9 +29,7 @@ public class Bling extends SubsystemBase {
 
   public static int color = 1;
   
-  private Joystick driverController;
-
-  private final GenericHID m_LightingController = new GenericHID(2);
+  private Joystick driverController = new Joystick(2);
   
   // In the constructor I initialized the LED strip as well as the LED buffer
   // and a joystick
@@ -48,7 +46,7 @@ public class Bling extends SubsystemBase {
 
     m_led.start();
     
-    driverController = new Joystick(0);
+    driverController = new Joystick(1);
 
   }
 
@@ -58,11 +56,11 @@ public class Bling extends SubsystemBase {
     // This method will be called once per scheduler run
     // If one of the buttons is pressed - you can change this to any input you want
 
-    if (driverController.getRawButtonPressed(9) || m_LightingController.getRawButtonPressed(7)) {
+    if (driverController.getRawButtonPressed(9)) {
 
         color = 0;
 
-    } else if (driverController.getRawButtonPressed(10) || m_LightingController.getRawButtonPressed(8)){
+    } else if (driverController.getRawButtonPressed(10)) {
 
         color = 1;
 

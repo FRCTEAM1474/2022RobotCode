@@ -6,7 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import edu.wpi.first.cameraserver.CameraServer;
 
 import edu.wpi.first.wpilibj.GenericHID;
 
@@ -30,11 +30,11 @@ public class Robot extends TimedRobot {
 
   private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(1);
 
-  private final WPI_VictorSPX m_motorOne = new WPI_VictorSPX(7);
+  private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(7);
 
   private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(2);
 
-  private final WPI_VictorSPX m_motorThree = new WPI_VictorSPX(4);
+  private final WPI_TalonSRX m_motorThree = new WPI_TalonSRX(4);
 
   MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
 
@@ -66,6 +66,8 @@ public class Robot extends TimedRobot {
 
   public void robotInit() {
 
+    CameraServer.startAutomaticCapture();
+
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
@@ -96,6 +98,8 @@ public class Robot extends TimedRobot {
 
     JoystickButton fastFlywheelButton = new JoystickButton(m_stickTwo, 2);
 
+    JoystickButton reverseFlywheelButton = new JoystickButton(m_stickTwo, 8);
+
     JoystickButton climberUp = new JoystickButton(m_stick, 11);
 
     JoystickButton climberDown = new JoystickButton(m_stick, 12);
@@ -118,9 +122,15 @@ public class Robot extends TimedRobot {
 
     fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-1));
 
+    reverseFlywheelButton.whileActiveOnce(new FlywheelCommand(1));
+
     climberUp.whileActiveOnce(new ClimberCommand(1));
 
     climberDown.whileActiveOnce(new ClimberCommand(-1));
+
+    climberDown.whenInactive(new ClimberCommand(0));
+
+    climberUp.whenInactive(new ClimberCommand(0));
 
     climberStay.whileActiveOnce(new ClimberCommand(0));
 
@@ -195,4 +205,3 @@ public class Robot extends TimedRobot {
     
   }
 }
-
