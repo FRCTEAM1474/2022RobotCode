@@ -28,13 +28,13 @@ public class Robot extends TimedRobot {
 
   // maps the MOTORS to the MOTOR CONTROLLERS
 
-  private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(1);
+  private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(2);
 
-  private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(7);
+  private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(4);
 
-  private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(2);
+  private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(1);
 
-  private final WPI_TalonSRX m_motorThree = new WPI_TalonSRX(4);
+  private final WPI_TalonSRX m_motorThree = new WPI_TalonSRX(7);
 
   MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
 
@@ -137,17 +137,50 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+
   public void autonomousInit() {
+
     startTime = Timer.getFPGATimestamp();
+
   }
 
   @Override
-  public void autonomousPeriodic() {
-    double time = Timer.getFPGATimestamp();
-    //System.out.println(time - startTime);
-    if (time - startTime < 3) {
 
-      m_robotDrive.arcadeDrive(0.8, 0.2);
+  public void autonomousPeriodic() {
+
+    double time = Timer.getFPGATimestamp();
+
+    //System.out.println(time - startTime);
+
+    if (time - startTime < 5 && time - startTime > 0) {
+
+      //m_robotDrive.arcadeDrive(-1, -0.1);
+
+      SecondaryIntakeSubsystem.setSpeed(-1);
+
+      FlywheelSubsystem.setSpeed(-0.5);
+
+      m_robotDrive.arcadeDrive(0, 0);
+
+    }
+
+    else if (time - startTime < 10.5 && time - startTime > 5) {
+
+      SecondaryIntakeSubsystem.setSpeed(0);
+
+      FlywheelSubsystem.setSpeed(0);
+
+      m_robotDrive.arcadeDrive(-0.65, 0);
+
+    }
+
+    else if (time - startTime < 14 && time - startTime > 10.5) {
+
+      SecondaryIntakeSubsystem.setSpeed(0);
+
+      FlywheelSubsystem.setSpeed(0);
+
+      m_robotDrive.arcadeDrive(0, 0);
 
     }
     
@@ -175,7 +208,7 @@ public class Robot extends TimedRobot {
     // That means that the Y axis drives forward
     // and backward, and the X turns left and right.
 
-    m_robotDrive.arcadeDrive(m_stick.getY(), -m_stick.getX());
+    m_robotDrive.arcadeDrive(-m_stick.getY(), -m_stick.getX());
 
     //m_robotDrive.arcadeDrive(m_controller.getRawAxis(1), -m_controller.getRawAxis(0));
 

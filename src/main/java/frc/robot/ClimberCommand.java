@@ -32,7 +32,7 @@ public class ClimberCommand extends CommandBase {
 
     public void end(boolean interup){
 
-        Robot.flywheel.setSpeed(0);
+        Robot.climber.setSpeed(0);
 
     }
 }

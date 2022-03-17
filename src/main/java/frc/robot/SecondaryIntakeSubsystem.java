@@ -8,9 +8,9 @@ public class SecondaryIntakeSubsystem extends SubsystemBase {
 
     //TalonSRX _talon2 = new TalonSRX(2);
 
-    private final WPI_VictorSPX m_secondaryIntakeMotor = new WPI_VictorSPX(6);
+    private final static WPI_VictorSPX m_secondaryIntakeMotor = new WPI_VictorSPX(6);
 
-    public void setSpeed(double speed) {
+    public static void setSpeed(double speed) {
 
         m_secondaryIntakeMotor.set(speed);
         

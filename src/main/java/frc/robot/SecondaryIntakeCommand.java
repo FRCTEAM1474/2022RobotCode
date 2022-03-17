@@ -16,7 +16,7 @@ public class SecondaryIntakeCommand extends CommandBase {
 
     public void initialize() {
 
-        Robot.secondaryintake.setSpeed(m_Speed);
+        SecondaryIntakeSubsystem.setSpeed(m_Speed);
 
     }
 
@@ -24,7 +24,7 @@ public class SecondaryIntakeCommand extends CommandBase {
 
     public void execute() {
 
-        Robot.secondaryintake.setSpeed(m_Speed);
+        SecondaryIntakeSubsystem.setSpeed(m_Speed);
 
     }
 
@@ -32,7 +32,7 @@ public class SecondaryIntakeCommand extends CommandBase {
 
     public void end(boolean interup){
 
-        Robot.secondaryintake.setSpeed(0);
+        SecondaryIntakeSubsystem.setSpeed(0);
         
     }
 }

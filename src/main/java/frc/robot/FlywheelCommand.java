@@ -16,7 +16,7 @@ public class FlywheelCommand extends CommandBase {
 
     public void initialize() {
 
-        Robot.flywheel.setSpeed(m_Speed);
+        FlywheelSubsystem.setSpeed(m_Speed);
 
     }
 
@@ -24,7 +24,7 @@ public class FlywheelCommand extends CommandBase {
 
     public void execute() {
 
-        Robot.flywheel.setSpeed(m_Speed);
+        FlywheelSubsystem.setSpeed(m_Speed);
 
     }
 
@@ -32,7 +32,7 @@ public class FlywheelCommand extends CommandBase {
 
     public void end(boolean interup){
 
-        Robot.flywheel.setSpeed(0);
+        FlywheelSubsystem.setSpeed(0);
 
     }
 }
