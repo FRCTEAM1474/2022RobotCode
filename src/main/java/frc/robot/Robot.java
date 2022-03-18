@@ -152,7 +152,17 @@ public class Robot extends TimedRobot {
 
     //System.out.println(time - startTime);
 
-    if (time - startTime < 5 && time - startTime > 0) {
+    if (time - startTime < 3 && time - startTime > 0) {
+
+      SecondaryIntakeSubsystem.setSpeed(0);
+      
+      FlywheelSubsystem.setSpeed(0);
+
+      m_robotDrive.arcadeDrive(0.4, 0);
+
+    }
+
+    else if (time - startTime < 5 && time - startTime > 3) {
 
       //m_robotDrive.arcadeDrive(-1, -0.1);
 
