@@ -26,7 +26,6 @@ public class Bling extends SubsystemBase {
 
   public int m_partymodeFirstPixelHue;
 
-
   //public static int color = 0;
 
   public static int color = 1;
