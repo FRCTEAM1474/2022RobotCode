@@ -164,7 +164,7 @@ public class Robot extends TimedRobot {
 
     }
 
-    else if (time - startTime < 10.5 && time - startTime > 5) {
+    else if (time - startTime < 8.5 && time - startTime > 5) {
 
       SecondaryIntakeSubsystem.setSpeed(0);
 
@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
 
     }
 
-    else if (time - startTime < 14 && time - startTime > 10.5) {
+    else if (time - startTime < 15 && time - startTime > 8.5) {
 
       SecondaryIntakeSubsystem.setSpeed(0);
 

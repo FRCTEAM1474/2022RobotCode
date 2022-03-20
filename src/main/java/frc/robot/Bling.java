@@ -24,6 +24,8 @@ public class Bling extends SubsystemBase {
 
   public int m_blueflux_FirstPixelHue;
 
+  public int m_partymodeFirstPixelHue;
+
 
   //public static int color = 0;
 
@@ -38,7 +40,7 @@ public class Bling extends SubsystemBase {
 
     m_led = new AddressableLED(5);
 
-    m_ledBuffer = new AddressableLEDBuffer(60);
+    m_ledBuffer = new AddressableLEDBuffer(89);
 
     m_led.setLength(m_ledBuffer.getLength());
 
@@ -64,6 +66,10 @@ public class Bling extends SubsystemBase {
 
         color = 1;
 
+    } else if (driverController.getRawButton(7)) {
+
+        color = 2;
+
     // If neither button is pressed
 
     } else {
@@ -83,6 +89,12 @@ public class Bling extends SubsystemBase {
     if (color == 0) {
 
         redflux();
+
+    }
+
+    if (color == 2) {
+
+      partymode();
 
     }
 
@@ -141,6 +153,24 @@ public class Bling extends SubsystemBase {
     m_redflux_FirstPixelHue++;
 
     m_redflux_FirstPixelHue %= 180;
+
+  }
+
+  public void partymode(){
+
+    
+      // For every pixel
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+        // Calculate the hue - hue is easier for rainbows because the color
+        // shape is a circle so only one value needs to precess
+        final var hue = (m_partymodeFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+      // Set the value
+      m_ledBuffer.setHSV(i, hue, 255, 128);
+    }
+    // Increase by to make the rainbow "move"
+    m_partymodeFirstPixelHue += 12;
+    // Check bounds
+    m_partymodeFirstPixelHue %= 180;
 
   }
 }
