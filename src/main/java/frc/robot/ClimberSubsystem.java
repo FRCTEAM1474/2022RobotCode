@@ -23,6 +23,7 @@ public class ClimberSubsystem extends SubsystemBase {
     DigitalInput climberDownLimitSwitch = new DigitalInput(0);
 
     public void setSpeed(double speed) {
+        
         if (climberDownLimitSwitch.get()) {
 
             m_climberMotor.set(VictorSPXControlMode.PercentOutput, speed);

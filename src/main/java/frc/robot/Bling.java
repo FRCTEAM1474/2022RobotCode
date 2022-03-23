@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Bling extends SubsystemBase {
 
-  // Create variables for the LED strip and LED buffer
-
   private AddressableLED m_led;
 
   private AddressableLEDBuffer m_ledBuffer;
@@ -24,15 +22,9 @@ public class Bling extends SubsystemBase {
 
   public int m_blueflux_FirstPixelHue;
 
-
-  //public static int color = 0;
-
   public static int color = 1;
   
   private Joystick driverController = new Joystick(2);
-  
-  // In the constructor I initialized the LED strip as well as the LED buffer
-  // and a joystick
   
   public Bling() {
 
@@ -51,10 +43,8 @@ public class Bling extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
 
-    // This method will be called once per scheduler run
-    // If one of the buttons is pressed - you can change this to any input you want
+  public void periodic() {
 
     if (driverController.getRawButtonPressed(9)) {
 
@@ -64,11 +54,7 @@ public class Bling extends SubsystemBase {
 
         color = 1;
 
-    // If neither button is pressed
-
     } else {
-
-      // Run setColorRGBAll method to set the color to black (off)
 
       setColorRGBAll(0, 0, 0);
 
@@ -86,22 +72,13 @@ public class Bling extends SubsystemBase {
 
     }
 
-    // Set the LEDs to the color held in the LED buffer variable
-
     m_led.setData(m_ledBuffer);
 
   }
 
-  // setColorRGBAll sets the LEDs all to one color
-  // Requires parameters for the RGB color values
-
   public void setColorRGBAll(int r, int g, int b) {
 
-    // For each LED
-
     for (var i = 0; i < (m_ledBuffer.getLength()); i++) {
-
-      // Set the LED buffer of the LED to the predetermined color
 
       m_ledBuffer.setRGB(i, r, g, b);
 
@@ -113,8 +90,6 @@ public class Bling extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
 
         final var blue = (m_blueflux_FirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
-
-        //m_ledBuffer.setHSV(i, 196, sat, 84);
 
         m_ledBuffer.setRGB(i, 0, 0, blue);
 
@@ -131,8 +106,6 @@ public class Bling extends SubsystemBase {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
 
         final var red = (m_redflux_FirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
-
-        //m_ledBuffer.setHSV(i, 196, sat, 84);
 
         m_ledBuffer.setRGB(i, red, 0, 0);
 

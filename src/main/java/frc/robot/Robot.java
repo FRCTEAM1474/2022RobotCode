@@ -26,8 +26,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Robot extends TimedRobot {
 
-  // maps the MOTORS to the MOTOR CONTROLLERS
-
   private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(2);
 
   private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(4);
@@ -56,8 +54,6 @@ public class Robot extends TimedRobot {
 
   public static ClimberSubsystem climber;
 
-  //public static ServoSubsystem servo;
-
   double flywheelSpeedLimit = 1;
 
   private double startTime;
@@ -67,10 +63,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     CameraServer.startAutomaticCapture();
-
-    // We need to invert one side of the drivetrain so that positive voltages
-    // result in both sides moving forward. Depending on how your robot's
-    // gearbox is constructed, you might have to invert the left side instead.
 
     m_Left.setInverted(true);
 
@@ -83,8 +75,6 @@ public class Robot extends TimedRobot {
     flywheel = new FlywheelSubsystem();
 
     climber = new ClimberSubsystem();
-
-    //servo = new ServoSubsystem();
 
     JoystickButton intakeInButton = new JoystickButton(m_stick, 5);
 
@@ -105,10 +95,6 @@ public class Robot extends TimedRobot {
     JoystickButton climberDown = new JoystickButton(m_stick, 12);
 
     JoystickButton climberStay = new JoystickButton(m_stick, 7);
-
-    //JoystickButton servoButton = new JoystickButton(m_stickTwo, 8);
-
-    //servoButton.whileActiveContinuous(new ServoCommand(0.5));
 
     intakeInButton.whileActiveOnce(new IntakeCommand(-1));
 
@@ -150,8 +136,6 @@ public class Robot extends TimedRobot {
 
     double time = Timer.getFPGATimestamp();
 
-    //System.out.println(time - startTime);
-
     if (time - startTime < 3 && time - startTime > 0) {
 
       SecondaryIntakeSubsystem.setSpeed(0);
@@ -163,8 +147,6 @@ public class Robot extends TimedRobot {
     }
 
     else if (time - startTime < 5 && time - startTime > 3) {
-
-      //m_robotDrive.arcadeDrive(-1, -0.1);
 
       SecondaryIntakeSubsystem.setSpeed(-1);
 
@@ -194,41 +176,13 @@ public class Robot extends TimedRobot {
 
     }
     
-    
-    /*if (time - startTime < 3) {
-      //m_Right.set(0.1);
-      //m_Left.set(0.1);
-      m_robotDrive.arcadeDrive(0.4, 0.4);
-      //m_motorZero.set(0.5);
-      //System.out.println(Timer.getFPGATimestamp());
-    } else {
-      //m_Right.set(0);
-      //m_Left.set(0);
-      m_robotDrive.arcadeDrive(0, 0);
-      //m_motorZero.set(0);
-      //System.out.println(Timer.getFPGATimestamp());
-    }*/
   }
 
   @Override
 
   public void teleopPeriodic() {
 
-    // Drive with arcade drive.
-    // That means that the Y axis drives forward
-    // and backward, and the X turns left and right.
-
     m_robotDrive.arcadeDrive(-m_stick.getY(), -m_stick.getX());
-
-    //m_robotDrive.arcadeDrive(m_controller.getRawAxis(1), -m_controller.getRawAxis(0));
-
-    //flywheelSpeedLimit = (m_stick.getRawAxis(3)+1)/2.0;
-
-    //JoystickButton flywheelButton = new JoystickButton(m_stick, 1);
-
-    //flywheelButton.whileActiveOnce(new FlywheelCommand(flywheelSpeedLimit));
-    
-    //flywheelButton.whileActiveOnce(new FlywheelCommand(1*flywheelSpeedLimit));
 
     GenericHID intakeInControllerButton = new GenericHID(2);
 
