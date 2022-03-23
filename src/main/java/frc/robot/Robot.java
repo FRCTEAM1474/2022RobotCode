@@ -142,7 +142,7 @@ public class Robot extends TimedRobot {
       
       FlywheelSubsystem.setSpeed(0);
 
-      m_robotDrive.arcadeDrive(0.4, 0);
+      m_robotDrive.arcadeDrive(0, 0);
 
     }
 
@@ -150,13 +150,13 @@ public class Robot extends TimedRobot {
 
       SecondaryIntakeSubsystem.setSpeed(-1);
 
-      FlywheelSubsystem.setSpeed(-0.5);
+      FlywheelSubsystem.setSpeed(-0.8);
 
       m_robotDrive.arcadeDrive(0, 0);
 
     }
 
-    else if (time - startTime < 10.5 && time - startTime > 5) {
+    else if (time - startTime < 7.5 && time - startTime > 5) {
 
       SecondaryIntakeSubsystem.setSpeed(0);
 
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
 
     }
 
-    else if (time - startTime < 14 && time - startTime > 10.5) {
+    else if (time - startTime < 15 && time - startTime > 7.5) {
 
       SecondaryIntakeSubsystem.setSpeed(0);
 
