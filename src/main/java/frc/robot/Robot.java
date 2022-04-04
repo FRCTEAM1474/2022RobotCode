@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -104,9 +104,9 @@ public class Robot extends TimedRobot {
 
     secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(1));
 
-    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.50));
+    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.60));
 
-    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-1));
+    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(m_stick.getRawAxis(3)));
 
     reverseFlywheelButton.whileActiveOnce(new FlywheelCommand(1));
 
@@ -199,6 +199,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     CommandScheduler.getInstance().run();
+
+    SmartDashboard.putNumber("position of slider", m_stick.getRawAxis(3));
     
   }
 }
