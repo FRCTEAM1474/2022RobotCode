@@ -114,9 +114,9 @@ public class Robot extends TimedRobot {
 
     secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(1));
 
-    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.50));
+    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.60));
 
-    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-1));
+    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(m_stick.getRawAxis(3)));
 
     reverseFlywheelButton.whileActiveOnce(new FlywheelCommand(1));
 
