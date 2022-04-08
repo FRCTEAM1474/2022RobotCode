@@ -20,25 +20,27 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Robot extends TimedRobot {
 
-  private final WPI_TalonSRX m_motorZero = new WPI_TalonSRX(2);
+  public static WPI_TalonSRX m_motorZero = new WPI_TalonSRX(2);
 
-  private final WPI_TalonSRX m_motorOne = new WPI_TalonSRX(4);
+  public static WPI_TalonSRX m_motorOne = new WPI_TalonSRX(4);
 
-  private final WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(1);
+  public static WPI_TalonSRX m_motorTwo = new WPI_TalonSRX(1);
 
-  private final WPI_TalonSRX m_motorThree = new WPI_TalonSRX(7);
+  public static WPI_TalonSRX m_motorThree = new WPI_TalonSRX(7);
 
-  MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
+  static MotorControllerGroup m_Right = new MotorControllerGroup(m_motorZero, m_motorOne);
 
-  MotorControllerGroup m_Left = new MotorControllerGroup(m_motorTwo, m_motorThree);
+  static MotorControllerGroup m_Left = new MotorControllerGroup(m_motorTwo, m_motorThree);
 
-  private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_Left, m_Right);
+  public static DifferentialDrive m_robotDrive = new DifferentialDrive(m_Left, m_Right);
 
   private final Joystick m_stick = new Joystick(0);
 
@@ -54,9 +56,13 @@ public class Robot extends TimedRobot {
 
   public static ClimberSubsystem climber;
 
+  public static double previousEncoderDelta = 0;
+
   double flywheelSpeedLimit = 1;
 
   private double startTime;
+
+  int interval = 0;
   
   @Override
 
@@ -96,6 +102,10 @@ public class Robot extends TimedRobot {
 
     JoystickButton climberStay = new JoystickButton(m_stick, 7);
 
+    JoystickButton move5feet = new JoystickButton(m_stickTwo, 12);
+
+    move5feet.whileActiveOnce(new DriveDistanceCommand(60));
+
     intakeInButton.whileActiveOnce(new IntakeCommand(-1));
 
     outtakeButton.whileActiveOnce(new IntakeCommand(1));
@@ -128,6 +138,10 @@ public class Robot extends TimedRobot {
 
     startTime = Timer.getFPGATimestamp();
 
+    m_motorTwo.setSelectedSensorPosition(0);
+
+    m_motorZero.setSelectedSensorPosition(0);
+
   }
 
   @Override
@@ -136,45 +150,47 @@ public class Robot extends TimedRobot {
 
     double time = Timer.getFPGATimestamp();
 
-    if (time - startTime < 3 && time - startTime > 0) {
+    if (time - startTime < 10 && time - startTime > 0) {
 
-      SecondaryIntakeSubsystem.setSpeed(0);
-      
-      FlywheelSubsystem.setSpeed(0);
+      double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+      System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+      System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+      double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+      //double autonomousDrivetrainRotation = (((currentEncoderDelta - previousEncoderDelta) / 4000));
+
+      double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+      System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+      m_robotDrive.arcadeDrive(-0.65, -autonomousDrivetrainRotation, true);
+
+      previousEncoderDelta = currentEncoderDelta;
+
+      interval = 0;
+
+    }
+
+    else {
 
       m_robotDrive.arcadeDrive(0, 0);
 
     }
 
-    else if (time - startTime < 5 && time - startTime > 3) {
+      double m_motorLeftEncoderOutput = Robot.m_motorZero.getSelectedSensorPosition();
 
-      SecondaryIntakeSubsystem.setSpeed(-1);
+      double m_motorRightEncoderOutput = Robot.m_motorTwo.getSelectedSensorPosition();
 
-      FlywheelSubsystem.setSpeed(-0.8);
+      double previousm_motorLeftEncoderOutput = Robot.m_motorZero.getSelectedSensorPosition();
 
-      m_robotDrive.arcadeDrive(0, 0);
+      double previousm_motorRightEncoderOutput = Robot.m_motorTwo.getSelectedSensorPosition();
 
-    }
-
-    else if (time - startTime < 7.5 && time - startTime > 5) {
-
-      SecondaryIntakeSubsystem.setSpeed(0);
-
-      FlywheelSubsystem.setSpeed(0);
-
-      m_robotDrive.arcadeDrive(-0.65, 0);
-
-    }
-
-    else if (time - startTime < 15 && time - startTime > 7.5) {
-
-      SecondaryIntakeSubsystem.setSpeed(0);
-
-      FlywheelSubsystem.setSpeed(0);
-
-      m_robotDrive.arcadeDrive(0, 0);
-
-    }
+      interval = interval + 1;
     
   }
 
@@ -182,7 +198,7 @@ public class Robot extends TimedRobot {
 
   public void teleopPeriodic() {
 
-    m_robotDrive.arcadeDrive(-m_stick.getY(), -m_stick.getX());
+    m_robotDrive.arcadeDrive(-m_stick.getY(), -m_stick.getX(), false);
 
     GenericHID intakeInControllerButton = new GenericHID(2);
 
@@ -191,6 +207,10 @@ public class Robot extends TimedRobot {
       new IntakeCommand(.5);
 
     }
+
+    System.out.println("MotorTwoOutput " + m_motorTwo.getSelectedSensorPosition());
+
+    System.out.println("MotorZeroOutput " + m_motorZero.getSelectedSensorPosition());
     
   }
 
@@ -199,6 +219,27 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     CommandScheduler.getInstance().run();
+
+    /*SmartDashboard.putNumber("encoderpositionright", Robot.m_motorTwo.getSelectedSensorPosition());
+
+    SmartDashboard.putNumber("encoderpositionleft", Robot.m_motorZero.getSelectedSensorPosition());
+
+    double leftMotorEncoderTicks = Robot.m_motorZero.getSelectedSensorPosition();
+
+    double leftMotorEncoderRevolutions = leftMotorEncoderTicks / 4096;
+
+    double leftMotorEncoderDistance = leftMotorEncoderRevolutions * 3.141592653589792 * 4;
+
+    double rightMotorEncoderTicks = Robot.m_motorTwo.getSelectedSensorPosition();
+
+    double rightMotorEncoderRevolutions = rightMotorEncoderTicks / 4096;
+
+    double rightMotorEncoderDistance = rightMotorEncoderRevolutions * 3.141592653589792 * 4;
+
+    SmartDashboard.putNumber("rightsidedistance", rightMotorEncoderDistance);
+
+    SmartDashboard.putNumber("leftsidedistance", leftMotorEncoderDistance);*/
     
   }
+
 }

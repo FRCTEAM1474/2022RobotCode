@@ -26,7 +26,7 @@ public class Bling extends SubsystemBase {
 
   public static int color = 1;
   
-  private Joystick driverController = new Joystick(2);
+  private Joystick driverController;
   
   public Bling() {
 
