@@ -16,7 +16,7 @@ public class IntakeCommand extends CommandBase {
 
     public void initialize() {
 
-        Robot.intake.setSpeed(m_Speed);
+        IntakeSubsystem.setSpeed(m_Speed);
 
     }
 
@@ -24,7 +24,7 @@ public class IntakeCommand extends CommandBase {
 
     public void execute() {
 
-        Robot.intake.setSpeed(m_Speed);
+        IntakeSubsystem.setSpeed(m_Speed);
 
     }
 
@@ -32,7 +32,7 @@ public class IntakeCommand extends CommandBase {
 
     public void end(boolean interup){
 
-        Robot.intake.setSpeed(0);
+        IntakeSubsystem.setSpeed(0);
         
     }
 }

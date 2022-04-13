@@ -6,11 +6,13 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.cameraserver.CameraServer;
 
-import edu.wpi.first.wpilibj.GenericHID;
-
 import edu.wpi.first.wpilibj.Joystick;
+
+import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -19,8 +21,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -62,7 +62,9 @@ public class Robot extends TimedRobot {
 
   private double startTime;
 
-  int interval = 0;
+  //ADXRS450_Gyro Gyro = new ADXRS450_Gyro();
+
+  AHRS gyro = new AHRS(SPI.Port.kMXP);
   
   @Override
 
@@ -114,9 +116,9 @@ public class Robot extends TimedRobot {
 
     secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(1));
 
-    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.60));
+    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.25));
 
-    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(m_stick.getRawAxis(3)));
+    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.6));
 
     reverseFlywheelButton.whileActiveOnce(new FlywheelCommand(1));
 
@@ -150,7 +152,7 @@ public class Robot extends TimedRobot {
 
     double time = Timer.getFPGATimestamp();
 
-    if (time - startTime < 10 && time - startTime > 0) {
+    if (time - startTime < 1.5 && time - startTime > 0) {
 
       double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
@@ -162,35 +164,154 @@ public class Robot extends TimedRobot {
 
       double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
 
-      //double autonomousDrivetrainRotation = (((currentEncoderDelta - previousEncoderDelta) / 4000));
-
       double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
 
-      System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+      //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
 
-      m_robotDrive.arcadeDrive(-0.65, -autonomousDrivetrainRotation, true);
+      m_robotDrive.arcadeDrive(0.70, -autonomousDrivetrainRotation, true); //change value to 0.65 later
 
       previousEncoderDelta = currentEncoderDelta;
 
-      interval = 0;
+      IntakeSubsystem.setSpeed(-1);
 
     }
 
-    else {
+    if (time -startTime < 1.6 && time - startTime > 1.5) {
+
+      m_motorTwo.setSelectedSensorPosition(0);
+
+      m_motorZero.setSelectedSensorPosition(0);
+
+      IntakeSubsystem.setSpeed(-1);
+
+      //double gyroCalibration = Gyro.getAngle();
+
+    }
+
+    if (time - startTime < 4.2 && time - startTime > 1.6) {
+
+      /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+      //double encoderTicksToSpinRight = m_motorRightEncoderPositionBeforeSpin + 2288;
+
+      if (Gyro.getAngle()) {
+
+        m_robotDrive.arcadeDrive(0, -1);
+
+      }
+
+      else {
+
+        m_robotDrive.arcadeDrive(0, 0);
+
+      }*/
+      
+      m_robotDrive.arcadeDrive(0.1, 0.5);
+
+      IntakeSubsystem.setSpeed(-1);
+
+    }
+
+    if (time - startTime < 4.3 && time - startTime > 4.2) {
+
+      m_motorTwo.setSelectedSensorPosition(0);
+
+      m_motorZero.setSelectedSensorPosition(0);
+
+      System.out.println(m_motorTwo.getSelectedSensorPosition());
+
+      System.out.println(m_motorZero.getSelectedSensorPosition());
+
+      IntakeSubsystem.setSpeed(0);
+
+    }
+
+    if (time - startTime < 7.8 && time - startTime > 4.3) {
+
+      double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+      //System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+      //System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+      double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+      double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+      //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+      m_robotDrive.arcadeDrive(0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+      previousEncoderDelta = currentEncoderDelta;
+
+      IntakeSubsystem.setSpeed(0);
+
+    }
+
+    if (time - startTime < 9.8 && time - startTime > 7.8) {
+
+      SecondaryIntakeSubsystem.setSpeed(-1);
+
+      FlywheelSubsystem.setSpeed(-0.6);
+
+    }
+
+    if (time - startTime < 9.9 && time - startTime > 9.8) {
+
+      m_motorTwo.setSelectedSensorPosition(0);
+
+      m_motorZero.setSelectedSensorPosition(0);
+
+      System.out.println(m_motorTwo.getSelectedSensorPosition());
+
+      System.out.println(m_motorZero.getSelectedSensorPosition());
+
+      IntakeSubsystem.setSpeed(0);
+
+      SecondaryIntakeSubsystem.setSpeed(0);
+
+      FlywheelSubsystem.setSpeed(0);
+
+    }
+
+
+    if (time - startTime < 13.7 && time - startTime > 9.9) {
+
+      double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+      System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+      System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+      double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+      double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+      //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+      m_robotDrive.arcadeDrive(-0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+      previousEncoderDelta = currentEncoderDelta;
+
+    }
+
+    if (time - startTime < 15 && time - startTime > 13.7) {
+
+      IntakeSubsystem.setSpeed(0);
+
+      SecondaryIntakeSubsystem.setSpeed(0);
+
+      FlywheelSubsystem.setSpeed(0);
 
       m_robotDrive.arcadeDrive(0, 0);
 
     }
-
-      double m_motorLeftEncoderOutput = Robot.m_motorZero.getSelectedSensorPosition();
-
-      double m_motorRightEncoderOutput = Robot.m_motorTwo.getSelectedSensorPosition();
-
-      double previousm_motorLeftEncoderOutput = Robot.m_motorZero.getSelectedSensorPosition();
-
-      double previousm_motorRightEncoderOutput = Robot.m_motorTwo.getSelectedSensorPosition();
-
-      interval = interval + 1;
     
   }
 
@@ -200,17 +321,15 @@ public class Robot extends TimedRobot {
 
     m_robotDrive.arcadeDrive(-m_stick.getY(), -m_stick.getX(), false);
 
-    GenericHID intakeInControllerButton = new GenericHID(2);
+    //System.out.println("MotorTwoOutput " + m_motorTwo.getSelectedSensorPosition());
 
-    if (intakeInControllerButton.getRawButtonPressed(2)){
+    //System.out.println("MotorZeroOutput " + m_motorZero.getSelectedSensorPosition());
 
-      new IntakeCommand(.5);
+    if (m_stick.getRawButtonPressed(9)) {
+
+      gyro.calibrate();
 
     }
-
-    System.out.println("MotorTwoOutput " + m_motorTwo.getSelectedSensorPosition());
-
-    System.out.println("MotorZeroOutput " + m_motorZero.getSelectedSensorPosition());
     
   }
 
@@ -240,6 +359,12 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("leftsidedistance", leftMotorEncoderDistance);*/
     
+    //System.out.println("gyro output for pitch AKA x axis " + gyro.getPitch());
+
+    //System.out.println("gyro output for roll AKA y axis " + gyro.getRoll());
+
+    //System.out.println("gyro output for yaw AKA z axis " + gyro.getYaw());
+
   }
 
 }
