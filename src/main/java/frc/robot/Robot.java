@@ -216,7 +216,23 @@ public class Robot extends TimedRobot {
 
           }*/
           
-          m_robotDrive.arcadeDrive(0.1, 0.7);
+          //nom-nom turny turns
+          
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+          
+          if (currentm_motorLeftEncoderPosition < 2288 && currentm_motorRightEncoderPosition < 2288) {
+
+            m_robotDrive.arcadeDrive(0.1, -0.65);
+
+          }
+
+         // m_robotDrive.arcadeDrive(0.1, 0.7);
           
           IntakeSubsystem.setSpeed(-1);
 
@@ -376,6 +392,8 @@ public class Robot extends TimedRobot {
           double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
 
           //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          //slaaaay sksksk -Liam
 
           m_robotDrive.arcadeDrive(-0.70, -autonomousDrivetrainRotation, true); //change value to 0.65 later
 
