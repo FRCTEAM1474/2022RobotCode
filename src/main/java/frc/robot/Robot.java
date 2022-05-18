@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.cameraserver.CameraServer;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -27,6 +27,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Robot extends TimedRobot {
+
+  DigitalInput newOrOldAutonomous = new DigitalInput(1);
+
+  DigitalInput revisedTwoBallOrRegularTwoBallAutonomous = new DigitalInput(2);
 
   public static WPI_TalonSRX m_motorZero = new WPI_TalonSRX(2);
 
@@ -116,11 +120,11 @@ public class Robot extends TimedRobot {
 
     secondaryOuttakeButton.whileActiveOnce(new SecondaryIntakeCommand(1));
 
-    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.25));
+    slowFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.6));
 
-    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.6));
+    fastFlywheelButton.whileActiveOnce(new FlywheelCommand(-0.25));
 
-    reverseFlywheelButton.whileActiveOnce(new FlywheelCommand(1));
+    reverseFlywheelButton.whileActiveOnce(new FlywheelCommand(0.5));
 
     climberUp.whileActiveOnce(new ClimberCommand(1));
 
@@ -152,164 +156,395 @@ public class Robot extends TimedRobot {
 
     double time = Timer.getFPGATimestamp();
 
-    if (time - startTime < 1.5 && time - startTime > 0) {
+    if (newOrOldAutonomous.get()) {
 
-      double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+      if (revisedTwoBallOrRegularTwoBallAutonomous.get()) {
 
-      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+        if (time - startTime < 1.5 && time - startTime > 0) {
 
-      System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
-      System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
 
-      double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+          System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
 
-      double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+          System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
 
-      //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
 
-      m_robotDrive.arcadeDrive(0.70, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
 
-      previousEncoderDelta = currentEncoderDelta;
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
 
-      IntakeSubsystem.setSpeed(-1);
+          m_robotDrive.arcadeDrive(0.70, -autonomousDrivetrainRotation, true); //change value to 0.65 later
 
-    }
+          previousEncoderDelta = currentEncoderDelta;
 
-    if (time -startTime < 1.6 && time - startTime > 1.5) {
+          IntakeSubsystem.setSpeed(-1);
 
-      m_motorTwo.setSelectedSensorPosition(0);
+        }
 
-      m_motorZero.setSelectedSensorPosition(0);
+        if (time -startTime < 1.6 && time - startTime > 1.5) {
 
-      IntakeSubsystem.setSpeed(-1);
+          m_motorTwo.setSelectedSensorPosition(0);
 
-      //double gyroCalibration = Gyro.getAngle();
+          m_motorZero.setSelectedSensorPosition(0);
 
-    }
+          IntakeSubsystem.setSpeed(-1);
 
-    if (time - startTime < 4.2 && time - startTime > 1.6) {
+          //double gyroCalibration = Gyro.getAngle();
 
-      /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+        }
 
-      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+        if (time - startTime < 2.75 && time - startTime > 1.6) { //should be 4.2
 
-      //double encoderTicksToSpinRight = m_motorRightEncoderPositionBeforeSpin + 2288;
+          /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
-      if (Gyro.getAngle()) {
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
 
-        m_robotDrive.arcadeDrive(0, -1);
+          //double encoderTicksToSpinRight = m_motorRightEncoderPositionBeforeSpin + 2288;
+
+          if (Gyro.getAngle()) {
+
+            m_robotDrive.arcadeDrive(0, -1);
+
+          }
+
+          else {
+
+            m_robotDrive.arcadeDrive(0, 0);
+
+          }*/
+          
+          m_robotDrive.arcadeDrive(0.1, 0.7);
+          
+          IntakeSubsystem.setSpeed(-1);
+
+        }
+
+        if (time - startTime < 4.3 && time - startTime > 2.75) { //should be 4.2
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          System.out.println(m_motorTwo.getSelectedSensorPosition());
+
+          System.out.println(m_motorZero.getSelectedSensorPosition());
+
+          IntakeSubsystem.setSpeed(0);
+
+        }
+
+        if (time - startTime < 7.8 && time - startTime > 4.3) {
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          //System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+          //System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          m_robotDrive.arcadeDrive(0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+          previousEncoderDelta = currentEncoderDelta;
+
+          IntakeSubsystem.setSpeed(0);
+
+        }
+
+        if (time - startTime < 9.8 && time - startTime > 7.8) {
+
+          SecondaryIntakeSubsystem.setSpeed(-1);
+
+          FlywheelSubsystem.setSpeed(-0.6);
+
+        }
+
+        if (time - startTime < 9.9 && time - startTime > 9.8) {
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          System.out.println(m_motorTwo.getSelectedSensorPosition());
+
+          System.out.println(m_motorZero.getSelectedSensorPosition());
+
+          IntakeSubsystem.setSpeed(0);
+
+          SecondaryIntakeSubsystem.setSpeed(0);
+
+          FlywheelSubsystem.setSpeed(0);
+
+        }
+
+
+        if (time - startTime < 13.7 && time - startTime > 9.9) {
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+          System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          m_robotDrive.arcadeDrive(-0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+          previousEncoderDelta = currentEncoderDelta;
+
+        }
+
+        if (time - startTime < 15 && time - startTime > 13.7) {
+
+          IntakeSubsystem.setSpeed(0);
+
+          SecondaryIntakeSubsystem.setSpeed(0);
+
+          FlywheelSubsystem.setSpeed(0);
+
+          m_robotDrive.arcadeDrive(0, 0);
+
+        }
 
       }
 
       else {
 
+        if (time - startTime < 1.5 && time - startTime > 0) {
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+          System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          m_robotDrive.arcadeDrive(0.70, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+          previousEncoderDelta = currentEncoderDelta;
+
+          IntakeSubsystem.setSpeed(-1);
+
+        }
+
+        if (time -startTime < 1.6 && time - startTime > 1.5) {
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          IntakeSubsystem.setSpeed(-1);
+
+          //double gyroCalibration = Gyro.getAngle();
+
+        }
+
+        if (time - startTime < 2.6 && time - startTime > 1.6) {
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+          System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          m_robotDrive.arcadeDrive(-0.70, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+          previousEncoderDelta = currentEncoderDelta;
+
+          IntakeSubsystem.setSpeed(-1);
+
+        }
+
+        if (time - startTime < 3.8 && time - startTime > 2.6) { //should be 4.2
+
+          /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          //double encoderTicksToSpinRight = m_motorRightEncoderPositionBeforeSpin + 2288;
+
+          if (Gyro.getAngle()) {
+
+            m_robotDrive.arcadeDrive(0, -1);
+
+          }
+
+          else {
+
+            m_robotDrive.arcadeDrive(0, 0);
+
+          }*/
+          
+          m_robotDrive.arcadeDrive(0.1, -0.7);
+          
+          IntakeSubsystem.setSpeed(-1);
+
+        }
+
+        if (time - startTime < 5.3 && time - startTime > 3.8) { //should be 4.2
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          System.out.println(m_motorTwo.getSelectedSensorPosition());
+
+          System.out.println(m_motorZero.getSelectedSensorPosition());
+
+          IntakeSubsystem.setSpeed(0);
+
+        }
+
+        if (time - startTime < 8.8 && time - startTime > 5.3) {
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          //System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+          //System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          m_robotDrive.arcadeDrive(0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+          previousEncoderDelta = currentEncoderDelta;
+
+          IntakeSubsystem.setSpeed(0);
+
+        }
+
+        if (time - startTime < 10.8 && time - startTime > 8.8) {
+
+          SecondaryIntakeSubsystem.setSpeed(-1);
+
+          FlywheelSubsystem.setSpeed(-0.6);
+
+        }
+
+        if (time - startTime < 10.9 && time - startTime > 10.8) {
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          System.out.println(m_motorTwo.getSelectedSensorPosition());
+
+          System.out.println(m_motorZero.getSelectedSensorPosition());
+
+          IntakeSubsystem.setSpeed(0);
+
+          SecondaryIntakeSubsystem.setSpeed(0);
+
+          FlywheelSubsystem.setSpeed(0);
+
+        }
+
+
+        if (time - startTime < 14.7 && time - startTime > 10.9) {
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
+
+          System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
+
+          double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
+
+          double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
+
+          //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
+
+          m_robotDrive.arcadeDrive(-0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
+
+          previousEncoderDelta = currentEncoderDelta;
+
+        }
+
+        if (time - startTime < 15 && time - startTime > 14.7) {
+
+          IntakeSubsystem.setSpeed(0);
+
+          SecondaryIntakeSubsystem.setSpeed(0);
+
+          FlywheelSubsystem.setSpeed(0);
+
+          m_robotDrive.arcadeDrive(0, 0);
+
+        }
+
+      }
+
+    }
+
+    else {
+
+      if (time - startTime < 5 && time - startTime > 0) {
+
+        SecondaryIntakeSubsystem.setSpeed(-1);
+
+        FlywheelSubsystem.setSpeed(-0.65);
+
         m_robotDrive.arcadeDrive(0, 0);
 
-      }*/
-      
-      m_robotDrive.arcadeDrive(0.1, 0.5);
+      }
 
-      IntakeSubsystem.setSpeed(-1);
+      if (time - startTime < 8.5 && time - startTime > 5) {
 
-    }
+        SecondaryIntakeSubsystem.setSpeed(0);
 
-    if (time - startTime < 4.3 && time - startTime > 4.2) {
+        FlywheelSubsystem.setSpeed(0);
 
-      m_motorTwo.setSelectedSensorPosition(0);
+        m_robotDrive.arcadeDrive(-0.65, 0);
 
-      m_motorZero.setSelectedSensorPosition(0);
+      }
 
-      System.out.println(m_motorTwo.getSelectedSensorPosition());
+      if (time - startTime < 15 && time - startTime > 8.5) {
 
-      System.out.println(m_motorZero.getSelectedSensorPosition());
+        SecondaryIntakeSubsystem.setSpeed(0);
 
-      IntakeSubsystem.setSpeed(0);
+        FlywheelSubsystem.setSpeed(0);
 
-    }
+        m_robotDrive.arcadeDrive(0, 0);
 
-    if (time - startTime < 7.8 && time - startTime > 4.3) {
-
-      double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
-
-      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
-
-      //System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
-
-      //System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
-
-      double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
-
-      double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
-
-      //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
-
-      m_robotDrive.arcadeDrive(0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
-
-      previousEncoderDelta = currentEncoderDelta;
-
-      IntakeSubsystem.setSpeed(0);
-
-    }
-
-    if (time - startTime < 9.8 && time - startTime > 7.8) {
-
-      SecondaryIntakeSubsystem.setSpeed(-1);
-
-      FlywheelSubsystem.setSpeed(-0.6);
-
-    }
-
-    if (time - startTime < 9.9 && time - startTime > 9.8) {
-
-      m_motorTwo.setSelectedSensorPosition(0);
-
-      m_motorZero.setSelectedSensorPosition(0);
-
-      System.out.println(m_motorTwo.getSelectedSensorPosition());
-
-      System.out.println(m_motorZero.getSelectedSensorPosition());
-
-      IntakeSubsystem.setSpeed(0);
-
-      SecondaryIntakeSubsystem.setSpeed(0);
-
-      FlywheelSubsystem.setSpeed(0);
-
-    }
-
-
-    if (time - startTime < 13.7 && time - startTime > 9.9) {
-
-      double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
-
-      double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
-
-      System.out.println("MotorRightOutput " + currentm_motorRightEncoderPosition);
-
-      System.out.println("MotorLeftOutput " + currentm_motorLeftEncoderPosition);
-
-      double currentEncoderDelta = currentm_motorRightEncoderPosition - (-currentm_motorLeftEncoderPosition);
-
-      double autonomousDrivetrainRotation = (((currentEncoderDelta) / 4000));
-
-      //System.out.println("autonomousDrivetrainRotation " + autonomousDrivetrainRotation);
-
-      m_robotDrive.arcadeDrive(-0.65, -autonomousDrivetrainRotation, true); //change value to 0.65 later
-
-      previousEncoderDelta = currentEncoderDelta;
-
-    }
-
-    if (time - startTime < 15 && time - startTime > 13.7) {
-
-      IntakeSubsystem.setSpeed(0);
-
-      SecondaryIntakeSubsystem.setSpeed(0);
-
-      FlywheelSubsystem.setSpeed(0);
-
-      m_robotDrive.arcadeDrive(0, 0);
+      }
 
     }
     
