@@ -9,7 +9,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.cameraserver.CameraServer;
+
 import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -30,7 +32,7 @@ public class Robot extends TimedRobot {
 
   DigitalInput newOrOldAutonomous = new DigitalInput(1);
 
-  DigitalInput revisedTwoBallOrRegularTwoBallAutonomous = new DigitalInput(2);
+  DigitalInput revisedTwoBallOrRegularTwoBallAutonomousOrInstantOrDelayedOneBallAutonomous = new DigitalInput(2);
 
   public static WPI_TalonSRX m_motorZero = new WPI_TalonSRX(2);
 
@@ -87,6 +89,8 @@ public class Robot extends TimedRobot {
     flywheel = new FlywheelSubsystem();
 
     climber = new ClimberSubsystem();
+
+    //Good Code- JW
 
     JoystickButton intakeInButton = new JoystickButton(m_stick, 5);
 
@@ -158,9 +162,9 @@ public class Robot extends TimedRobot {
 
     if (newOrOldAutonomous.get()) {
 
-      if (revisedTwoBallOrRegularTwoBallAutonomous.get()) {
+      if (revisedTwoBallOrRegularTwoBallAutonomousOrInstantOrDelayedOneBallAutonomous.get()) {
 
-        if (time - startTime < 1.5 && time - startTime > 0) {
+        if (time - startTime < 2.5 && time - startTime > 0) {
 
           double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
@@ -184,7 +188,7 @@ public class Robot extends TimedRobot {
 
         }
 
-        if (time -startTime < 1.6 && time - startTime > 1.5) {
+        if (time -startTime < 2.6 && time - startTime > 2.5) {
 
           m_motorTwo.setSelectedSensorPosition(0);
 
@@ -196,7 +200,71 @@ public class Robot extends TimedRobot {
 
         }
 
-        if (time - startTime < 2.75 && time - startTime > 1.6) { //should be 4.2
+        if (time - startTime < 4.08 && time - startTime > 2.6) {
+
+          m_robotDrive.arcadeDrive(-0.65, 0);
+
+        }
+
+        if (time - startTime < 5.1 && time - startTime > 4.08) {
+
+          //slayyyyyyyyy
+          //yassssss
+
+          m_robotDrive.arcadeDrive(0, 0);
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+        }
+
+        if (time - startTime < 7.5 && time - startTime > 5.1) { //should be 4.2
+
+          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+          
+          System.out.println("always print 2");
+
+          if (currentm_motorLeftEncoderPosition < 11000 && currentm_motorRightEncoderPosition < 11000) {
+
+            m_robotDrive.arcadeDrive(0.05, 0.65);
+
+            System.out.println("firstprint");
+
+          }
+
+
+          else if (currentm_motorLeftEncoderPosition < 11000) {
+
+              m_robotDrive.tankDrive(0.65, 0);
+
+              System.out.println("secondprint");
+
+          }
+
+          else if (currentm_motorRightEncoderPosition < 11000) {
+
+              m_robotDrive.tankDrive(0, 0.65);         
+
+              System.out.println("thirdprint");
+
+          }
+
+          else {
+
+            System.out.println("STOPPING");
+
+            m_robotDrive.arcadeDrive(0, 0);
+
+          }
+
+          System.out.println(currentm_motorLeftEncoderPosition);
+
+          System.out.println(currentm_motorRightEncoderPosition);
+
+        
 
           /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
@@ -218,19 +286,31 @@ public class Robot extends TimedRobot {
           
           //nom-nom turny turns
           
-          m_motorTwo.setSelectedSensorPosition(0);
+          //m_motorTwo.setSelectedSensorPosition(0);
 
-          m_motorZero.setSelectedSensorPosition(0);
+          //m_motorZero.setSelectedSensorPosition(0);
 
-          double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+          /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
           double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
           
-          if (currentm_motorLeftEncoderPosition < 2288 && currentm_motorRightEncoderPosition < 2288) {
+          if (currentm_motorLeftEncoderPosition < 100 && currentm_motorRightEncoderPosition < 100) {
 
-            m_robotDrive.arcadeDrive(0.1, -0.65);
+            m_robotDrive.arcadeDrive(0.05, 0.65);
+
+          }*/
+
+          /*else if (currentm_motorLeftEncoderPosition < 2288) {
+
+              m_robotDrive.tankDrive(0, 0.65);
 
           }
+
+          else if (currentm_motorRightEncoderPosition < 2288) {
+
+              m_robotDrive.tankDrive(0.65, 0);         
+
+          } */
 
          // m_robotDrive.arcadeDrive(0.1, 0.7);
           
@@ -238,7 +318,7 @@ public class Robot extends TimedRobot {
 
         }
 
-        if (time - startTime < 4.3 && time - startTime > 2.75) { //should be 4.2
+        if (time - startTime < 7.7 && time - startTime > 7.5) {
 
           m_motorTwo.setSelectedSensorPosition(0);
 
@@ -252,7 +332,7 @@ public class Robot extends TimedRobot {
 
         }
 
-        if (time - startTime < 7.8 && time - startTime > 4.3) {
+        if (time - startTime < 9.7 && time - startTime > 7.7) {
 
           double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
@@ -276,7 +356,7 @@ public class Robot extends TimedRobot {
 
         }
 
-        if (time - startTime < 9.8 && time - startTime > 7.8) {
+        if (time - startTime < 11.7 && time - startTime > 9.7) {
 
           SecondaryIntakeSubsystem.setSpeed(-1);
 
@@ -284,7 +364,7 @@ public class Robot extends TimedRobot {
 
         }
 
-        if (time - startTime < 9.9 && time - startTime > 9.8) {
+        if (time - startTime < 11.8 && time - startTime > 11.7) {
 
           m_motorTwo.setSelectedSensorPosition(0);
 
@@ -303,7 +383,7 @@ public class Robot extends TimedRobot {
         }
 
 
-        if (time - startTime < 13.7 && time - startTime > 9.9) {
+        /*if (time - startTime < 14.2 && time - startTime > 10.4) {
 
           double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
@@ -323,9 +403,9 @@ public class Robot extends TimedRobot {
 
           previousEncoderDelta = currentEncoderDelta;
 
-        }
+        }*/
 
-        if (time - startTime < 15 && time - startTime > 13.7) {
+        if (time - startTime < 15 && time - startTime > 11.8) {
 
           IntakeSubsystem.setSpeed(0);
 
@@ -341,7 +421,98 @@ public class Robot extends TimedRobot {
 
       else {
 
-        if (time - startTime < 1.5 && time - startTime > 0) {
+        System.out.println("always print");
+
+        if (time - startTime < 3 && time - startTime > 0) {
+
+          m_motorZero.setSelectedSensorPosition(0);
+
+          m_motorTwo.setSelectedSensorPosition(0);
+
+        }
+
+        if (time - startTime > 3) {
+
+        double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+          
+          System.out.println("always print 2");
+
+          if (currentm_motorLeftEncoderPosition < 11000 && currentm_motorRightEncoderPosition < 11000) {
+
+            m_robotDrive.arcadeDrive(0.05, 0.65);
+
+            System.out.println("firstprint");
+
+          }
+
+
+          else if (currentm_motorLeftEncoderPosition < 11000) {
+
+              m_robotDrive.tankDrive(0.65, 0);
+
+              System.out.println("secondprint");
+
+          }
+
+          else if (currentm_motorRightEncoderPosition < 11000) {
+
+              m_robotDrive.tankDrive(0, 0.65);         
+
+              System.out.println("thirdprint");
+
+          }
+
+          else {
+
+            System.out.println("STOPPING");
+
+            m_robotDrive.arcadeDrive(0, 0);
+
+          }
+
+          System.out.println(currentm_motorLeftEncoderPosition);
+
+          System.out.println(currentm_motorRightEncoderPosition);
+
+        }  
+
+        if (time - startTime < 15 && time - startTime > 3) { //should be 4.2
+
+          /*double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
+
+          double currentm_motorLeftEncoderPosition = m_motorZero.getSelectedSensorPosition();
+
+          //double encoderTicksToSpinRight = m_motorRightEncoderPositionBeforeSpin + 2288;
+
+          if (Gyro.getAngle()) {
+
+            m_robotDrive.arcadeDrive(0, -1);
+
+          }
+
+          else {
+
+            m_robotDrive.arcadeDrive(0, 0);
+
+          }*/
+          
+          //nom-nom turny turns
+          
+          //m_motorTwo.setSelectedSensorPosition(0);
+
+          //m_motorZero.setSelectedSensorPosition(0);
+
+          
+
+         // m_robotDrive.arcadeDrive(0.1, 0.7);
+          
+          //IntakeSubsystem.setSpeed(-1);
+
+        }
+
+        /* if (time - startTime < 1.5 && time - startTime > 0) {
 
           double currentm_motorRightEncoderPosition = m_motorTwo.getSelectedSensorPosition();
 
@@ -421,7 +592,7 @@ public class Robot extends TimedRobot {
 
             m_robotDrive.arcadeDrive(0, 0);
 
-          }*/
+          }
           
           m_robotDrive.arcadeDrive(0.1, -0.7);
           
@@ -519,6 +690,47 @@ public class Robot extends TimedRobot {
         if (time - startTime < 15 && time - startTime > 14.7) {
 
           IntakeSubsystem.setSpeed(0);
+f
+          SecondaryIntakeSubsystem.setSpeed(0);
+
+          FlywheelSubsystem.setSpeed(0);
+
+          m_robotDrive.arcadeDrive(0, 0);
+
+        }
+
+        */
+        System.out.println("-------\n\n");
+
+      } 
+
+    }
+
+    else {
+
+      if (revisedTwoBallOrRegularTwoBallAutonomousOrInstantOrDelayedOneBallAutonomous.get()) {
+
+        if (time - startTime < 5 && time - startTime > 0) {
+
+          SecondaryIntakeSubsystem.setSpeed(-1);
+
+          FlywheelSubsystem.setSpeed(-0.65);
+
+          m_robotDrive.arcadeDrive(0, 0);
+
+        }
+
+        if (time - startTime < 8.5 && time - startTime > 5) {
+
+          SecondaryIntakeSubsystem.setSpeed(0);
+
+          FlywheelSubsystem.setSpeed(0);
+
+          m_robotDrive.arcadeDrive(-0.65, 0);
+
+        }
+
+        if (time - startTime < 15 && time - startTime > 8.5) {
 
           SecondaryIntakeSubsystem.setSpeed(0);
 
@@ -530,37 +742,33 @@ public class Robot extends TimedRobot {
 
       }
 
-    }
+      else {
 
-    else {
+        if (time - startTime < 5 && time - startTime > 0) {
 
-      if (time - startTime < 5 && time - startTime > 0) {
+          SecondaryIntakeSubsystem.setSpeed(-1);
 
-        SecondaryIntakeSubsystem.setSpeed(-1);
+          FlywheelSubsystem.setSpeed(-0.65);
 
-        FlywheelSubsystem.setSpeed(-0.65);
+          m_robotDrive.arcadeDrive(0, 0);
 
-        m_robotDrive.arcadeDrive(0, 0);
+        }
 
-      }
+        if (time - startTime < 11.5 && time - startTime > 5) {
 
-      if (time - startTime < 8.5 && time - startTime > 5) {
+          SecondaryIntakeSubsystem.setSpeed(0);
 
-        SecondaryIntakeSubsystem.setSpeed(0);
+          FlywheelSubsystem.setSpeed(0);
 
-        FlywheelSubsystem.setSpeed(0);
+          m_robotDrive.arcadeDrive(0, 0);
 
-        m_robotDrive.arcadeDrive(-0.65, 0);
+        }
 
-      }
+        if (time - startTime < 15 && time - startTime > 11.5) {
 
-      if (time - startTime < 15 && time - startTime > 8.5) {
+          m_robotDrive.arcadeDrive(-0.65, 0);
 
-        SecondaryIntakeSubsystem.setSpeed(0);
-
-        FlywheelSubsystem.setSpeed(0);
-
-        m_robotDrive.arcadeDrive(0, 0);
+        }
 
       }
 
